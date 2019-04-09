@@ -63,13 +63,15 @@ public class SmtpClient {
     }
     public void readInput(){
         String line = "";
-        try { //condition de fin correspond au ligne qu'envoie le protocole SMTP
-            while (!line.contains("250") && !line.contains("500") && !line.contains("501") && !line.contains("354")) {
-                line = input.readUTF();
-                System.out.println(line);
+        if(socket.isConnected()) {
+            try { //condition de fin correspond au ligne qu'envoie le protocole SMTP
+                while (!line.contains("250") && !line.contains("500") && !line.contains("501") && !line.contains("354")) {
+                    line = input.readUTF();
+                    System.out.println(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch(IOException e){
-            e.printStackTrace();
         }
     }
 }
