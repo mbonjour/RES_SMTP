@@ -1,5 +1,3 @@
-package mail;
-
 public class Mail {
     private String from;
     private String to;

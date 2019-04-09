@@ -1,6 +1,4 @@
-package prank;
-
-import mail.Person;
+import Person;
 
 import java.util.ArrayList;
 
