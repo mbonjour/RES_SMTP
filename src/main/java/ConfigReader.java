@@ -1,6 +1,3 @@
-
-import jdk.internal.net.http.common.Pair;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -8,8 +5,12 @@ import java.util.Properties;
 public class ConfigReader {
 
     private Properties prop;
-    private ArrayList<String> victim;
-    private ArrayList<Pair<String, String>> message;
+    private String smtpAddress;
+    private int smtpPort;
+    private int numberOfGroups;
+    private String CCs;
+    private ArrayList<Person> victim;
+    private ArrayList<String> message;
 
     //source : https://www.mkyong.com/java/java-properties-file-examples/
 
@@ -28,6 +29,10 @@ public class ConfigReader {
 
             // load a property files
             prop.load(input);
+            this.smtpAddress = prop.getProperty("smtpServerAdress");
+            this.smtpPort = Integer.valueOf(prop.getProperty("smtpServerPort"));
+            this.CCs = prop.getProperty("witnessesToCC");
+            this.numberOfGroups = Integer.valueOf(prop.getProperty("numberofGroups"));
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -45,27 +50,21 @@ public class ConfigReader {
         return prop;
     }
 
-    private ArrayList<Pair<String, String>> getMessage(){
-        String data="";
-        String subject="";
-        ArrayList<Pair<String, String>> message = new ArrayList<Pair<String, String>>();
+    private ArrayList<String> getMessage(){
+        String currentMessage="";
+        ArrayList<String> message = new ArrayList<String>();
         try {
-            FileReader reader = new FileReader("messages.utf8");
+            FileReader reader = new FileReader("config/messages.utf8");
             BufferedReader br = new BufferedReader(reader);
 
             // read line by line
             String line;
             while ((line = br.readLine()) != null) {
-
-                if(line.contains("Subject :")){
-                    subject = line;
-                }
-                else if(line.contains("---")){
-                    message.add(new Pair(subject, data));
-                    data = subject = "";
+                if(line.contains("---")){
+                    message.add(currentMessage);
 
                 }else{
-                    data += line + '\n';
+                    currentMessage += line + '\n';
                 }
             }
 
@@ -75,17 +74,17 @@ public class ConfigReader {
         return message;
     }
 
-    private ArrayList<String> getVictim(){
-        ArrayList<String> victim = new ArrayList<String>();
+    private ArrayList<Person> getVictim(){
+        ArrayList<Person> victim = new ArrayList<Person>();
 
         try {
-            FileReader reader = new FileReader("messages.utf8");
+            FileReader reader = new FileReader("config/mailTarget.utf8");
             BufferedReader br = new BufferedReader(reader);
 
             // read line by line
             String line;
             while ((line = br.readLine()) != null) {
-                victim.add(line);
+                victim.add(new Person(line));
             }
 
             } catch (IOException e) {
@@ -95,5 +94,27 @@ public class ConfigReader {
     }
 
 
+    public String getSmtpAddress() {
+        return smtpAddress;
+    }
 
+    public int getSmtpPort() {
+        return smtpPort;
+    }
+
+    public int getNumberOfGroups() {
+        return numberOfGroups;
+    }
+
+    public String getCCs() {
+        return CCs;
+    }
+
+    public ArrayList<Person> getVictims(){
+        return this.victim;
+    }
+
+    public ArrayList<String> getMessages(){
+        return this.message;
+    }
 }

@@ -1,10 +1,19 @@
+import java.util.ArrayList;
+
 public class Mail {
     private String from;
-    private String to;
-    private String[] cc;
-    private String subject;
-    private String body;
+    private ArrayList<String> to;
+    private ArrayList<String> cc;
+    private String message;
 
+    public Mail(String from, ArrayList<String> to, ArrayList<String> cc, String message){
+        this.from = from;
+        this.to = to;
+        this.cc = cc;
+
+        //TODO: Split message into body and Subject
+        this.message = message;
+    }
 
     public String getFrom() {
         return from;
@@ -14,35 +23,27 @@ public class Mail {
         this.from = from;
     }
 
-    public String getTo() {
+    public ArrayList<String> getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(ArrayList<String> to) {
         this.to = to;
     }
 
-    public String[] getCc() {
+    public ArrayList<String> getCc() {
         return cc;
     }
 
-    public void setCc(String[] cc) {
+    public void setCc(ArrayList<String> cc) {
         this.cc = cc;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getMessage() {
+        return message;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
