@@ -2,11 +2,11 @@ import java.util.ArrayList;
 
 public class Mail {
     private String from;
-    private ArrayList<String> to;
-    private ArrayList<String> cc;
+    private String to;
+    private String cc;
     private String message;
-
-    public Mail(String from, ArrayList<String> to, ArrayList<String> cc, String message){
+    //TODO: Améliorer pour avoir plusieurs CCs et autres
+    public Mail(String from, String  to, String cc, String message){
         this.from = from;
         this.to = to;
         this.cc = cc;
@@ -23,19 +23,19 @@ public class Mail {
         this.from = from;
     }
 
-    public ArrayList<String> getTo() {
+    public String getTo() {
         return to;
     }
 
-    public void setTo(ArrayList<String> to) {
+    public void setTo(String to) {
         this.to = to;
     }
 
-    public ArrayList<String> getCc() {
+    public String getCc() {
         return cc;
     }
 
-    public void setCc(ArrayList<String> cc) {
+    public void setCc(String cc) {
         this.cc = cc;
     }
 

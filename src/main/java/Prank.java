@@ -13,12 +13,11 @@ public class Prank {
 
     public void runPrank(SmtpClient smtp){
         Person faker = this.pranked.getPerson().get(0);
-        ArrayList<String> TOs = new ArrayList<String>();
+        Person to;
         for(int i =1;i < pranked.getPerson().size(); ++i){
-            TOs.add(pranked.getPerson().get(i).getEmail());
+            to = pranked.getPerson().get(i);
+            Mail currentPrank = new Mail(faker.getEmail(), to.getEmail(), CCs.get(0), this.message);
+            smtp.sendMail(currentPrank);
         }
-
-        Mail currentPrank = new Mail(faker.getEmail(), TOs, CCs, this.message);
-        smtp.sendMail(currentPrank);
     }
 }

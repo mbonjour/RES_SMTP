@@ -20,29 +20,30 @@ public class SmtpClient {
 
     public void sendMail(Mail mail){
         //TODO : envoi automatisé d'un mail
+        //TODO: essayer de gérer les TOs multiples
         this.connect();
         this.readInput();
         try {
-            output.write("EHLO test");
-            output.newLine();
+            output.write("EHLO test\r\n");
             output.flush();
             this.readInput();
-            output.write("MAIL FROM: " + mail.getFrom());
+            output.write("MAIL FROM: " + mail.getFrom() + "\r\n");
+            output.flush();
             this.readInput();
-            for(String dest : mail.getTo()){
-                output.write("RCPT TO: " + dest);
-                this.readInput();
-            }
-            output.write("DATA");
+            System.out.println("RCPT TO: " + mail.getTo() + "\r\n");
+            output.write("RCPT TO: " + mail.getTo() + "\r\n");
+            output.flush();
             this.readInput();
-            output.write("From: " + mail.getFrom() + "\nTo: ");
-            for(String dest : mail.getTo()){
-                output.write(dest + ";");
-            }
+            output.write("DATA\r\n");
+            output.flush();
+            this.readInput();
+            output.write("From: " + mail.getFrom() + "\r\nTo: " + mail.getTo() + "\r\nCc: " + mail.getCc() + "\r\n");
             output.write(mail.getMessage());
-            output.write("\n.\n");
+            output.write("\r\n.\r\n");
+            output.flush();
             this.readInput();
-            output.write("QUIT");
+            output.write("QUIT\r\n");
+            output.flush();
         } catch(IOException e){
             e.printStackTrace();
         }
