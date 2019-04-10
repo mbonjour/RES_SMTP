@@ -40,15 +40,14 @@ public class SmtpClient {
             output.write("DATA\r\n");
             output.flush();
             this.readInput();
-            output.write("From: <" + mail.getFrom().getEmail() + ">\r\nTo: " );
+            output.write("From: " + mail.getFrom().getEmail() + "\r\n" );
             for(Person toPerson : mail.getTo().getPerson()){
-                output.write( "<" + toPerson.getEmail() + ">");
+                output.write( "To: " + toPerson.getEmail() + "\r\n");
             }
-            output.write("\r\nCc: ");
             for(Person ccPerson : mail.getCc().getPerson()){
-                output.write( "<" + ccPerson.getEmail() + ">");
+                output.write( "Cc: " + ccPerson.getEmail() + "\r\n");
             }
-            output.write("\r\nSubject : " + mail.getSubject() + "\r\n");
+            output.write(mail.getSubject() + "\r\n\r\n");
             output.write(mail.getMessage());
             output.write("\r\n.\r\n");
             output.flush();
