@@ -27,6 +27,7 @@ docker run -d -p 2525:8282
 ```
 
 Please be advised that the port 2525 match the SmtpPort in the file _config.properties_. It needs to be the same to work properly.  
+
 3. The STMP server beeing up, you can now freely send emails with our application. Either launch it from your favorite IDE or by running the following command from the root fo the application :
 ```
 cd target
