@@ -7,6 +7,10 @@ public class Group {
     public Group(){
         this.listPersonne = new ArrayList<Person>();
     }
+    public Group(Person person){
+        this.listPersonne = new ArrayList<Person>();
+        listPersonne.add(person);
+    }
     public void addPerson(Person person){ //Regarder si déjà dans le groupe ?
         listPersonne.add(person);
     }

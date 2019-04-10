@@ -23,21 +23,32 @@ public class SmtpClient {
         //TODO: essayer de gérer les TOs multiples
         this.connect();
         this.readInput();
+
         try {
             output.write("EHLO test\r\n");
             output.flush();
             this.readInput();
-            output.write("MAIL FROM: " + mail.getFrom() + "\r\n");
+            output.write("MAIL FROM: <" + mail.getFrom().getEmail() + ">\r\n");
             output.flush();
             this.readInput();
-            System.out.println("RCPT TO: " + mail.getTo() + "\r\n");
-            output.write("RCPT TO: " + mail.getTo() + "\r\n");
-            output.flush();
-            this.readInput();
+            for(Person toPerson : mail.getTo().getPerson()) {
+                System.out.println("RCPT TO: <" + toPerson.getEmail() + ">\r\n");
+                output.write("RCPT TO: <" + toPerson.getEmail() + ">\r\n");
+                output.flush();
+                this.readInput();
+            }
             output.write("DATA\r\n");
             output.flush();
             this.readInput();
-            output.write("From: " + mail.getFrom() + "\r\nTo: " + mail.getTo() + "\r\nCc: " + mail.getCc() + "\r\n");
+            output.write("From: <" + mail.getFrom().getEmail() + ">\r\nTo: " );
+            for(Person toPerson : mail.getTo().getPerson()){
+                output.write( "<" + toPerson.getEmail() + ">");
+            }
+            output.write("\r\nCc: ");
+            for(Person ccPerson : mail.getCc().getPerson()){
+                output.write( "<" + ccPerson.getEmail() + ">");
+            }
+            output.write("\r\nSubject : " + mail.getSubject() + "\r\n");
             output.write(mail.getMessage());
             output.write("\r\n.\r\n");
             output.flush();

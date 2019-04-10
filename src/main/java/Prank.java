@@ -2,22 +2,22 @@ import java.util.ArrayList;
 
 public class Prank {
     private Group pranked;
-    private String message;
-    private ArrayList<String> CCs;
+    private Mail message;
+    private Group CCs;
 
-    public Prank(Group groupe, String message, ArrayList<String> CCs){
-        this.pranked = groupe;
+    public Prank(Group target, Mail message, Group CCs){
+        this.pranked = target;
         this.message = message;
         this.CCs = CCs;
     }
 
     public void runPrank(SmtpClient smtp){
         Person faker = this.pranked.getPerson().get(0);
-        Person to;
+
         for(int i =1;i < pranked.getPerson().size(); ++i){
-            to = pranked.getPerson().get(i);
-            Mail currentPrank = new Mail(faker.getEmail(), to.getEmail(), CCs.get(0), this.message);
-            smtp.sendMail(currentPrank);
+
+                Mail currentPrank = new Mail(faker, new Group(pranked.getPerson().get(i)), CCs, this.message.getSubject(), this.message.getMessage());
+                smtp.sendMail(currentPrank);
         }
     }
 }

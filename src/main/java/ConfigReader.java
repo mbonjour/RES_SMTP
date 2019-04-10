@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 public class ConfigReader {
@@ -10,7 +11,7 @@ public class ConfigReader {
     private int numberOfGroups;
     private String CCs;
     private ArrayList<Person> victim;
-    private ArrayList<String> message;
+    private HashMap<String,String> message;
 
     //source : https://www.mkyong.com/java/java-properties-file-examples/
 
@@ -50,9 +51,10 @@ public class ConfigReader {
         return prop;
     }
 
-    private ArrayList<String> getMessage(){
+    private HashMap<String, String> getMessage(){
+        HashMap<String, String> map = new HashMap<String, String>();
         String currentMessage="";
-        ArrayList<String> message = new ArrayList<String>();
+        String currentSubject="";
         try {
             FileReader reader = new FileReader("config/messages.utf8");
             BufferedReader br = new BufferedReader(reader);
@@ -61,9 +63,10 @@ public class ConfigReader {
             String line;
             while ((line = br.readLine()) != null) {
                 if(line.contains("---")){
-                    message.add(currentMessage);
-
-                }else{
+                    map.put(currentSubject, currentMessage);
+                }else if (line.contains("Subject :")){
+                    currentSubject = line;
+                } else{
                     currentMessage += line + '\n';
                 }
             }
@@ -71,7 +74,7 @@ public class ConfigReader {
         } catch (IOException e) {
             System.err.format("IOException: %s%n", e);
         }
-        return message;
+        return map;
     }
 
     private ArrayList<Person> getVictim(){
@@ -114,7 +117,7 @@ public class ConfigReader {
         return this.victim;
     }
 
-    public ArrayList<String> getMessages(){
+    public HashMap<String, String> getMessages(){
         return this.message;
     }
 }
