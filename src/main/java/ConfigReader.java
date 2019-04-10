@@ -68,6 +68,8 @@ public class ConfigReader {
             while ((line = br.readLine()) != null) {
                 if(line.contains("---")){
                     map.put(currentSubject, currentMessage);
+                    currentSubject = "";
+                    currentMessage = "";
                 }else if (line.contains("Subject :")){
                     currentSubject = line;
                 } else{
