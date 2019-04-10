@@ -1,5 +1,6 @@
 FROM java:8
 WORKDIR /
-ADD RES_SMTP-1.0-SNAPSHOT.jar RES_SMTP-1.0-SNAPSHOT.jar
+COPY ./MockMock-1.4.0.one-jar ./
 EXPOSE 8282
-CMD java -jar RES_SMTP-1.0-SNAPSHOT.jar
+EXPOSE 2525
+CMD java -jar MockMock-1.4.0.one-jar -p 2525
