@@ -12,6 +12,8 @@ public class ConfigReader {
     private String CCs;
     private ArrayList<Person> victim;
     private HashMap<String,String> message;
+    private String username;
+    private String password;
 
     //source : https://www.mkyong.com/java/java-properties-file-examples/
 
@@ -34,6 +36,8 @@ public class ConfigReader {
             this.smtpPort = Integer.valueOf(prop.getProperty("smtpServerPort"));
             this.CCs = prop.getProperty("witnessesToCC");
             this.numberOfGroups = Integer.valueOf(prop.getProperty("numberofGroups"));
+            this.username = prop.getProperty("username");
+            this.password = prop.getProperty("password");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -73,6 +77,7 @@ public class ConfigReader {
 
         } catch (IOException e) {
             System.err.format("IOException: %s%n", e);
+
         }
         return map;
     }
@@ -119,5 +124,13 @@ public class ConfigReader {
 
     public HashMap<String, String> getMessages(){
         return this.message;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

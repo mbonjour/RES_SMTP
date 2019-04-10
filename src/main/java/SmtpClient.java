@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Base64;
 
 /**
  * This class can be used as a resourceful of methods to connect
@@ -12,14 +13,23 @@ public class SmtpClient {
     private Socket socket;
     private BufferedReader input;
     private BufferedWriter output;
+    private boolean withAuth;
+    private String username = "";
+    private String password = "";
 
     SmtpClient(String smtpAddress, int SmtpPort){
+        this(smtpAddress,SmtpPort,"","");
+    }
+
+    SmtpClient(String smtpAddress, int SmtpPort, String username, String password){
         this.SmtpAddress = smtpAddress;
         this.SmtpPort = SmtpPort;
+        this.withAuth = false;
+        this.username = username;
+        this.password = password;
     }
 
     public void sendMail(Mail mail){
-        //TODO : envoi automatisé d'un mail
         //TODO: essayer de gérer les TOs multiples
         this.connect();
         this.readInput();
@@ -28,22 +38,37 @@ public class SmtpClient {
             output.write("EHLO test\r\n");
             output.flush();
             this.readInput();
+            if(this.withAuth){
+                output.write("AUTH LOGIN\r\n");
+                output.flush();
+                this.readInput();
+                output.write(Base64.getEncoder().encodeToString(username.getBytes()) + "\r\n");
+                output.flush();
+                this.readInput();
+                output.write(Base64.getEncoder().encodeToString(password.getBytes()) + "\r\n");
+                output.flush();
+                this.readInput();
+            }
             output.write("MAIL FROM: <" + mail.getFrom().getEmail() + ">\r\n");
             output.flush();
             this.readInput();
+
             for(Person toPerson : mail.getTo().getPerson()) {
                 System.out.println("RCPT TO: <" + toPerson.getEmail() + ">\r\n");
                 output.write("RCPT TO: <" + toPerson.getEmail() + ">\r\n");
                 output.flush();
                 this.readInput();
             }
+
             output.write("DATA\r\n");
             output.flush();
             this.readInput();
             output.write("From: " + mail.getFrom().getEmail() + "\r\n" );
+
             for(Person toPerson : mail.getTo().getPerson()){
                 output.write( "To: " + toPerson.getEmail() + "\r\n");
             }
+
             for(Person ccPerson : mail.getCc().getPerson()){
                 output.write( "Cc: " + ccPerson.getEmail() + "\r\n");
             }
@@ -97,6 +122,7 @@ public class SmtpClient {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         System.out.println("disconnected");
     }
 
@@ -110,11 +136,15 @@ public class SmtpClient {
             }
         }
     }
+
     public void readInput(){
         String line = "";
         if(socket.isConnected()) {
             try { //condition de fin correspond au ligne qu'envoie le protocole SMTP
-                while (!line.contains("250 ") && !line.contains("500") && !line.contains("501") && !line.contains("354") && !line.contains("220")) {
+                while (!line.contains("250 ") && !line.contains("500") && !line.contains("501") && !line.contains("354") && !line.contains("220") && !line.contains("334") && !line.contains("235")) {
+                    if(line.contains("AUTH")){
+                        this.withAuth = true;
+                    }
                     //TODO: Check les erreurs et renvoyer à l'user ?
                     line = input.readLine();
                     System.out.println(line);
