@@ -6,6 +6,7 @@ public class PrankGenerator {
         // TODO: ajouter logique nbre de groupe, test ici 1 groupe
 
         ConfigReader configs = new ConfigReader();
+
         SmtpClient smtp = new SmtpClient(configs.getSmtpAddress(),configs.getSmtpPort(), configs.getUsername(),configs.getPassword());
         ArrayList<Group> victime = new ArrayList<Group>();
         int ratio = configs.getVictims().size() / configs.getNumberOfGroups();
@@ -27,6 +28,7 @@ public class PrankGenerator {
         for(;counter < configs.getVictims().size(); ++counter){
             victime.get(configs.getNumberOfGroups() - 1).addPerson(configs.getVictims().get(counter));
         }
+
         // Recuperation of the common CC for the prank
         Group CCs = new Group(new Person(configs.getCCs()));
         for(Group victims : victime) {
