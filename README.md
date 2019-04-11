@@ -20,13 +20,13 @@ secondAddress@email.com
 There are differents way you can test our tool. In the description below we will use a Docker image to emulate the SMTP server. Docker is a tool to wrap an application from your environment and which contain all that is needed to run this application locally on your machine. This guarantees that the software will always run the same, regardless of its environment.  
 Here's a guide you can follow :  
 1. After you downloaded this project, open a terminal and go to the folder _util_. It should contains a Dockerfile and a Java archive (.jar)
-2. run the following command :  
+2. run the following command from the _util_ folder :  
 ```
-docker build -t "SmtpMock"
-docker run -d -p 2525:8282 
+docker build -t mockserver .
+docker run -d -p 8282:8282 -p 2525:2525 mockserver
 ```
 
-Please be advised that the port 2525 match the SmtpPort in the file _config.properties_. It needs to be the same to work properly.  
+Please be advised that the port 2525 matchs the SmtpPort in the file _config.properties_. It needs to be the same to work properly.  
 
 3. The STMP server beeing up, you can now freely send emails with our application. Either launch it from your favorite IDE or by running the following command from the root fo the application :
 ```
