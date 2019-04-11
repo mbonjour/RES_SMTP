@@ -36,8 +36,8 @@ public class ConfigReader {
             this.smtpPort = Integer.valueOf(prop.getProperty("smtpServerPort"));
             this.CCs = prop.getProperty("witnessesToCC");
             this.numberOfGroups = Integer.valueOf(prop.getProperty("numberofGroups"));
-            this.username = prop.getProperty("username");
-            this.password = prop.getProperty("password");
+            this.username = prop.getProperty("username") == null ? "" : prop.getProperty("username");
+            this.password = prop.getProperty("password") == null ? "" : prop.getProperty("password");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -70,8 +70,9 @@ public class ConfigReader {
                     map.put(currentSubject, currentMessage);
                     currentSubject = "";
                     currentMessage = "";
-                }else if (line.contains("Subject :")){
-                    currentSubject = line;
+                }else if (line.contains("Subject:")){
+                    currentSubject = line.substring(8);
+                   // System.out.println(line.substring(8));
                 } else{
                     currentMessage += line + '\n';
                 }

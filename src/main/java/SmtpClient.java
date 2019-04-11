@@ -72,7 +72,8 @@ public class SmtpClient {
             for(Person ccPerson : mail.getCc().getPerson()){
                 output.write( "Cc: " + ccPerson.getEmail() + "\r\n");
             }
-            output.write(mail.getSubject() + "\r\n\r\n");
+            output.write("Content-type: text/plain; charset=utf-8\r\n");
+            output.write("Subject: =?utf-8?B?" + Base64.getEncoder().encodeToString(mail.getSubject().getBytes()) + "?=\r\n\r\n");
             output.write(mail.getMessage());
             output.write("\r\n.\r\n");
             output.flush();
