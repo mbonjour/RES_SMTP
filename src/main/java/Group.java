@@ -17,4 +17,10 @@ public class Group {
     public List<Person> getPerson(){
         return listPersonne;
     }
+    public int getSize(){
+        return listPersonne.size();
+    }
+    public Person get(int i){
+        return this.listPersonne.get(i);
+    }
 }

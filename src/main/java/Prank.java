@@ -18,7 +18,6 @@ public class Prank {
 
     public void runPrank(SmtpClient smtp){
         Person faker = this.pranked.getPerson().get(0);
-
         Set<String> key = message.keySet();
         // List of the keys
         List<String> key2 = new ArrayList<String>(key);

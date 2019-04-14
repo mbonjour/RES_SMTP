@@ -30,7 +30,6 @@ public class SmtpClient {
     }
 
     public void sendMail(Mail mail){
-        //TODO: essayer de gérer les TOs multiples
         this.connect();
         this.readInput();
 
@@ -86,21 +85,6 @@ public class SmtpClient {
         this.disconnect();
     }
 
-    private String getSmtpAddress() {
-        return SmtpAddress;
-    }
-
-    public void setSmtpAddress(String smtpAddress) {
-        SmtpAddress = smtpAddress;
-    }
-
-    private int getSmtpPort() {
-        return SmtpPort;
-    }
-
-    public void setSmtpPort(int smtpPort) {
-        SmtpPort = smtpPort;
-    }
 
     public void connect(){
         try{
@@ -146,7 +130,6 @@ public class SmtpClient {
                     if(line.contains("AUTH")){
                         this.withAuth = true;
                     }
-                    //TODO: Check les erreurs et renvoyer à l'user ?
                     line = input.readLine();
                     System.out.println(line);
                 }

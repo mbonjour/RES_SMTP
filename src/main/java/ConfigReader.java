@@ -10,12 +10,11 @@ public class ConfigReader {
     private int smtpPort;
     private int numberOfGroups;
     private String CCs;
-    private ArrayList<Person> victim;
+    private Group victim;
     private HashMap<String,String> message;
     private String username;
     private String password;
 
-    //source : https://www.mkyong.com/java/java-properties-file-examples/
 
     public ConfigReader() {
         this.prop = getProp();
@@ -24,6 +23,7 @@ public class ConfigReader {
     }
 
     private Properties getProp() {
+        //source : https://www.mkyong.com/java/java-properties-file-examples/
         Properties prop = new Properties();
         InputStream input = null;
 
@@ -72,7 +72,6 @@ public class ConfigReader {
                     currentMessage = "";
                 }else if (line.contains("Subject:")){
                     currentSubject = line.substring(8);
-                   // System.out.println(line.substring(8));
                 } else{
                     currentMessage += line + '\n';
                 }
@@ -85,8 +84,8 @@ public class ConfigReader {
         return map;
     }
 
-    private ArrayList<Person> getVictim(){
-        ArrayList<Person> victim = new ArrayList<Person>();
+    private Group getVictim(){
+        Group victim = new Group();
 
         try {
             FileReader reader = new FileReader("config/mailTarget.utf8");
@@ -95,7 +94,7 @@ public class ConfigReader {
             // read line by line
             String line;
             while ((line = br.readLine()) != null) {
-                victim.add(new Person(line));
+                victim.addPerson(new Person(line));
             }
 
             } catch (IOException e) {
@@ -106,23 +105,22 @@ public class ConfigReader {
 
 
     public String getSmtpAddress() {
-        return smtpAddress;
+        return this.smtpAddress;
     }
 
     public int getSmtpPort() {
-        return smtpPort;
+        return this.smtpPort;
     }
 
     public int getNumberOfGroups() {
-        return numberOfGroups;
+        return this.numberOfGroups;
     }
 
     public String getCCs() {
-        return CCs;
+        return this.CCs;
     }
 
-    public ArrayList<Person> getVictims(){
-        return this.victim;
+    public Group getVictims(){ return this.victim;
     }
 
     public HashMap<String, String> getMessages(){
@@ -130,10 +128,10 @@ public class ConfigReader {
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 }
