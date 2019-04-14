@@ -1,3 +1,0 @@
-FROM java:8
-COPY smtpprank.jar /opt/app/smtpprank.jar
-CMD ["java", "-jar", "/opt/app/smtpprank.jar"]%

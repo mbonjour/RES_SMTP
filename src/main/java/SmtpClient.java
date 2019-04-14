@@ -111,16 +111,6 @@ public class SmtpClient {
         System.out.println("disconnected");
     }
 
-    public void sendMessage(String message){
-        if(socket.isConnected()){
-            try {
-                output.write(message);
-                output.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public void readInput(){
         String line = "";
