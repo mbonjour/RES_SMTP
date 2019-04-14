@@ -18,21 +18,30 @@ secondAddress@email.com
 ## How to use
 
 There are differents way you can test our tool. In the description below we will use a Docker image to emulate the SMTP server. Docker is a tool to wrap an application from your environment and which contain all that is needed to run this application locally on your machine. This guarantees that the software will always run the same, regardless of its environment.  
-Here's a guide you can follow :  
-1. After you downloaded this project, open a terminal and go to the folder _util_. It should contains a Dockerfile and a Java archive (.jar)
-2. run the following command from the _util_ folder :  
+Since we are really nice guys, all you have to do use the application is to run the following command from the root folder :
 ```
-docker build -t mockserver .
-docker run -d -p 8282:8282 -p 2525:2525 mockserver
+sudo chmod +x launchPrank.sh 
+sudo chmod +x startPrank.sh
+./lauchPrank.sh
+./startPrank.sh
 ```
+If you want to see the result connect to localhost:8282 on your browser. 
+To send more email you just have to launch the second script.
 
-Please be advised that the port 2525 matchs the SmtpPort in the file _config.properties_. It needs to be the same to work properly.  
+Please be advised that the port 2525 matchs the SmtpPort in the file _config.properties_. It needs to be the same to work properly. Please change accordingly.
 
-3. The STMP server beeing up, you can now freely send emails with our application. Either launch it from your favorite IDE or by running the following command from the root fo the application :
-```
-cd target
-java -jar RES_SMTP-1.0-SNAPSHOT.jar
-```
+
 
 ## Implementation Detail
+
+### Class Diagram
+![UML](util/figures/UML.png)
+
+### Description
+
+All is about the ConfigReader : It will check all the proprieties stored in the config file.  
+We can therefore create victim group and get the content of email (body + subject).  
+We can then look at the class Prank. It will use the message found by the ConfigReader to generate prank. To run a prank it will need a smtpClient.  
+A SMTP client is build thanks to the information given in the configuration file. This client will connect to a socket and exchange with the server to send email. 
+
 
